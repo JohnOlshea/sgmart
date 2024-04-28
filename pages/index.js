@@ -9,6 +9,7 @@ export default function home({ country }) {
 
   return (
     <>
+	  {console.log(session)}
       <div>
         <Header country={country} />
 	  {

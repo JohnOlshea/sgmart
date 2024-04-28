@@ -5,7 +5,13 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import Auth0Provider from "next-auth/providers/auth0";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+import clientPromise from "./lib/mongodb";
+import bcrypt from "bcrypt";
+import db from "../../../utils/db";
+db.connectDb();
 export default NextAuth({
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
@@ -29,5 +35,12 @@ export default NextAuth({
       issuer: process.env.AUTH0_ISSUER,
     }),
   ],
+  pages: {
+    //signIn: "/signin",
+  },
+  session: {
+    strategy: "jwt",
+  },
+  // database: process.env.MONGODB_URI,
+  secret: process.env.JWT_SECRET,
 });
-
